@@ -1,0 +1,14 @@
+@startuml
+actor Main
+participant "Directory (project)" as D
+participant "SecurityAuditVisitor" as V
+participant "SourceCodeFile" as S
+Main -> D : accept(V)
+D -> V : visit(D)
+loop each child ProjectElement
+  D -> S : accept(V)
+  S -> V : visit(S)
+  V -> V : inspect security flags
+end
+V --> Main : security report
+@enduml

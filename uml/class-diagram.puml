@@ -1,0 +1,37 @@
+@startuml
+interface ProjectElement { +accept(visitor: ProjectVisitor): void }
+interface ProjectVisitor {
+ +visit(file: SourceCodeFile): void
+ +visit(file: TestFile): void
+ +visit(file: ConfigurationFile): void
+ +visit(file: DependencyFile): void
+ +visit(directory: Directory): void
+}
+class SourceCodeFile
+class TestFile
+class ConfigurationFile
+class DependencyFile
+class Directory { -children: List<ProjectElement> +add(element): void }
+class SecurityAuditVisitor
+class ProjectStatisticsVisitor
+class QualityGateVisitor
+class ComplianceVisitor
+class DocumentationVisitor
+ProjectElement <|.. SourceCodeFile
+ProjectElement <|.. TestFile
+ProjectElement <|.. ConfigurationFile
+ProjectElement <|.. DependencyFile
+ProjectElement <|.. Directory
+ProjectVisitor <|.. SecurityAuditVisitor
+ProjectVisitor <|.. ProjectStatisticsVisitor
+ProjectVisitor <|.. QualityGateVisitor
+ProjectVisitor <|.. ComplianceVisitor
+ProjectVisitor <|.. DocumentationVisitor
+Directory o-- "0..*" ProjectElement
+ProjectElement ..> ProjectVisitor : accept(visitor)
+ProjectVisitor ..> SourceCodeFile : visit
+ProjectVisitor ..> TestFile : visit
+ProjectVisitor ..> ConfigurationFile : visit
+ProjectVisitor ..> DependencyFile : visit
+ProjectVisitor ..> Directory : visit
+@enduml
